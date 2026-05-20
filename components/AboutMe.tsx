@@ -18,7 +18,7 @@ export default function AboutMe() {
   return (
     <section 
       ref={containerRef}
-      className="py-16 px-6 md:px-12 w-full flex flex-col items-center justify-center bg-transparent"
+      className="pt-36 pb-20 px-6 md:px-12 w-full flex flex-col items-center justify-center bg-transparent"
     >
       <div className="max-w-[1400px] w-full mx-auto flex flex-col items-center justify-center text-center">
         {/* Title */}
