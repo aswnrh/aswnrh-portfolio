@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aswin's Portfolio
 
-## Getting Started
+A highly interactive, developer-focused portfolio featuring custom canvas animations, retro game integration, and dynamic particle effects.
 
-First, run the development server:
+## 🛠️ Built With
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The site is built with a modern, high-performance web stack:
+- **Core Framework**: [Next.js 16.2](https://nextjs.org/) & [React 19](https://react.dev/) for server-rendered page efficiency and component-driven architecture.
+- **Language**: [TypeScript](https://www.typescriptlang.org/) for robust static typing and maintainable codebases.
+- **Styling**: [TailwindCSS v4.0](https://tailwindcss.com/) with PostCSS for high-performance utility-first styling.
+- **Interactivity**: Native **HTML5 Canvas API** for low-level, high-framerate rendering of interactive animations.
+- **Pre-rendering Tools**: [node-canvas](https://github.com/Automattic/node-canvas) (`canvas` npm package) to pre-process images/illustrations into lightweight dot JSON vectors.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚡ Particle Motion & Physics Simulation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The interactive particle/text scattering throughout the site (e.g., in [ScatterText.tsx](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/ScatterText.tsx) and [RobotCollector.tsx](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/RobotCollector.tsx)) runs on a real-time 2D physics engine built on top of the Canvas API.
 
-## Learn More
+### How it Works:
+Each dot is defined by a data structure tracking:
+- `x`, `y`: Current 2D canvas coordinates.
+- `originX`, `originY`: The particle's default/anchor coordinates.
+- `vx`, `vy`: Current horizontal and vertical velocities.
 
-To learn more about Next.js, take a look at the following resources:
+Every frame in the `requestAnimationFrame` loop applies the following forces:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Mouse Repulsion**:
+   When the mouse cursor moves within a threshold radius (e.g., `RADIUS = 50px` or `60px`), a repulsive force is calculated:
+   $$\text{force} = \frac{\text{RADIUS} - \text{distance}}{\text{RADIUS}} \times \text{STRENGTH}$$
+   This force accelerates the particle away from the cursor along the mouse-to-particle angle:
+   ```typescript
+   dot.vx += Math.cos(angle) * force * 4;
+   dot.vy += Math.sin(angle) * force * 4;
+   ```
+2. **Hooke's Law Spring Force**:
+   A spring-back effect constantly pulls the particle back to its original target position:
+   ```typescript
+   dot.vx += (dot.originX - dot.x) * SPRING;
+   dot.vy += (dot.originY - dot.y) * SPRING;
+   ```
+   *(where `SPRING = 0.085`)*
+3. **Damping (Friction)**:
+   Velocity is multiplied by a damping coefficient to simulate resistance, dissipate energy, and prevent infinite oscillation:
+   ```typescript
+   dot.vx *= DAMPING;
+   dot.vy *= DAMPING;
+   ```
+   *(where `DAMPING = 0.86`)*
+4. **Velocity Clamping**:
+   To prevent excessive speed from large cursor movements, velocities are capped at `MAX_VELOCITY = 42`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Performance Optimization:
+To prevent idle CPU consumption, the rendering loop dynamically pauses when the particles settle (i.e., all velocities fall below a tiny threshold `0.01` and offsets from their origins are `< 0.1` px). The loop automatically restarts upon detecting mouse activity near the canvas area.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎨 Creation of Dotted Images
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project illustrations and icons are represented as structured JSON arrays containing dot coordinates and hex color values (e.g., `public/project-dots-webrtc.json`). This keeps asset delivery extremely lightweight and allows instant integration with the physics system.
+
+They are created using two preprocessing scripts in the [scripts](file:///Users/aswnrh/Projects/aswnrh-portfolio/scripts) directory:
+
+### 1. Procedural Illustrations ([generate-project-dots.mjs](file:///Users/aswnrh/Projects/aswnrh-portfolio/scripts/generate-project-dots.mjs))
+- Uses `node-canvas` on the server/developer side to programmatically draw scenes (e.g., a WebRTC conference window layout, a food delivery map with pins, or an auction platform bids graph).
+- Once drawn onto an offscreen canvas, the script samples the pixels on a high-resolution grid (e.g., $120 \times 80$).
+- Every non-transparent pixel (alpha > 30) is recorded into an array of dots containing normalized `{ x, y, color: hex }` values and output to a JSON file.
+
+### 2. Image Raster to Dot Vector ([img-to-dots.js](file:///Users/aswnrh/Projects/aswnrh-portfolio/scripts/img-to-dots.js))
+- Loads any standard raster PNG/JPG file (e.g., a pixel art drawing).
+- Samples pixel coordinates using a specified grid resolution (default: 100 columns).
+- Filters out background/transparent pixels based on brightness and alpha thresholds.
+- Converts the sampled colors to hexadecimal string hashes (`#ffffff`) and writes the coordinate map to a JSON file.
+
+At runtime, these JSON lists are loaded and rendered dynamically using [ProjectDotImage](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/Projects.tsx#L188) components, inheriting the cursor interaction and spring animations.
