@@ -121,6 +121,11 @@ body {
   50% { transform: translateY(-10px); }
 }
 
+@keyframes skillsMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out forwards;
 }
@@ -139,6 +144,31 @@ body {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.skills-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.skills-track {
+  display: flex;
+  flex-shrink: 0;
+  width: max-content;
+  gap: 2.5rem;
+  animation: skillsMarquee 54s linear infinite;
+  will-change: transform;
+}
+
+.skills-track-reverse {
+  animation-direction: reverse;
+  animation-duration: 62s;
+}
+
+.skills-row:hover .skills-track {
+  animation-play-state: paused;
 }
 
 /* Stagger children */

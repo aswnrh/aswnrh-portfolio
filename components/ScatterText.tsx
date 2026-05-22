@@ -72,6 +72,7 @@ interface ScatterTextProps {
   color?: string;
   hoverColor?: string;
   center?: boolean;
+  right?: boolean;
 }
 
 // Physics — matched to mannan.io
@@ -128,6 +129,7 @@ export default function ScatterText({
   color = "#777777",
   hoverColor = "#00ff88",
   center = false,
+  right = false,
 }: ScatterTextProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const dotsRef = useRef<Dot[]>([]);
@@ -302,7 +304,8 @@ export default function ScatterText({
       style={{
         width: dims.w,
         height: dims.h,
-        marginLeft: center ? undefined : -padX,
+        marginRight: right ? -padX : undefined,
+        marginLeft: (center || right) ? undefined : -padX,
         marginTop: -padY,
       }}
     >

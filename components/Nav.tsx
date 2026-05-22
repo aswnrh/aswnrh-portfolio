@@ -40,9 +40,39 @@ export default function Nav() {
       {/* Mobile menu */}
       <div className={`md:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
         <div className="px-8 py-6 bg-bg/95 backdrop-blur-xl border-t border-border flex flex-col gap-5">
-          <a href="#work" onClick={() => setMobileOpen(false)} className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors">WORK</a>
-          <a href="#about" onClick={() => setMobileOpen(false)} className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors">ABOUT</a>
-          <a href="#contact" onClick={() => setMobileOpen(false)} className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors">CONTACT</a>
+          <a 
+            href="#work" 
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen(false);
+              document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' });
+            }} 
+            className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors"
+          >
+            WORK
+          </a>
+          <a 
+            href="#about" 
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen(false);
+              document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' });
+            }} 
+            className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors"
+          >
+            ABOUT
+          </a>
+          <a 
+            href="#contact" 
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen(false);
+              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+            }} 
+            className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-text-primary transition-colors"
+          >
+            CONTACT
+          </a>
           <a href="https://github.com/aswnrh" target="_blank" rel="noopener noreferrer" className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-accent transition-colors">GITHUB</a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-text-muted text-sm tracking-[0.2em] uppercase hover:text-accent transition-colors">LINKEDIN</a>
         </div>
