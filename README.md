@@ -1,6 +1,6 @@
 # Aswin's Portfolio
 
-A highly interactive, developer-focused portfolio featuring custom canvas animations, retro game integration, and dynamic particle effects.
+A highly interactive, developer-focused portfolio featuring custom canvas animations, and dynamic particle effects.
 
 ## 🛠️ Built With
 
