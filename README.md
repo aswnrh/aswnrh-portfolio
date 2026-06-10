@@ -48,7 +48,7 @@ Every frame in the `requestAnimationFrame` loop applies the following forces:
    ```
    *(where `DAMPING = 0.86`)*
 4. **Velocity Clamping**:
-   To prevent excessive speed from large cursor movements, velocities are capped at `MAX_VELOCITY = 42`.
+   To prevent excessive speed from large cursor movements, velocities are capped at `MAX_VELOCITY = 42`
 
 ### Performance Optimization:
 To prevent idle CPU consumption, the rendering loop dynamically pauses when the particles settle (i.e., all velocities fall below a tiny threshold `0.01` and offsets from their origins are `< 0.1` px). The loop automatically restarts upon detecting mouse activity near the canvas area.
