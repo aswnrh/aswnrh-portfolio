@@ -13,7 +13,7 @@ The site is built with a modern, high-performance web stack:
 
 ---
 
-## ⚡ Particle Motion & Physics Simulation
+## ⚡ Particle Motion & Physics Simulation.
 
 The interactive particle/text scattering throughout the site (e.g., in [ScatterText.tsx](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/ScatterText.tsx) and [RobotCollector.tsx](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/RobotCollector.tsx)) runs on a real-time 2D physics engine built on top of the Canvas API.
 
