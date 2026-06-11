@@ -70,6 +70,5 @@ They are created using two preprocessing scripts in the [scripts](file:///Users/
 - Loads any standard raster PNG/JPG file (e.g., a pixel art drawing).
 - Samples pixel coordinates using a specified grid resolution (default: 100 columns).
 - Filters out background/transparent pixels based on brightness and alpha thresholds.
-- Converts the sampled colors to hexadecimal string hashes (`#ffffff`) and writes the coordinate map to a JSON file.
 
 At runtime, these JSON lists are loaded and rendered dynamically using [ProjectDotImage](file:///Users/aswnrh/Projects/aswnrh-portfolio/components/Projects.tsx#L188) components, inheriting the cursor interaction and spring animations.
